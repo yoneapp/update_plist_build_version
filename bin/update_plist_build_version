@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+
+require "optparse"
+require "update_plist_build_version"
+
+module UpdatePlistBuildVersion
+  class Main
+
+    def start
+      opts = parse_opts(ARGV)
+      runner = Runner.new(opts)
+      runner.run
+    end
+
+    private
+
+    ###
+    # コマンドライン引数をパースします。
+    # 入力ファイルと出力ファイルは同じファイルでも別ファイルでも構いません。
+    # 環境変数 INFO_PLIST_PATH を入出力ファイルのデフォルトのパスとして使用します。
+    def parse_opts(argv)
+      opts = {}
+
+      opt = OptionParser.new{|opt|
+        opt.banner = "Usage #{$0} [options]"
+        opt.separator "Options:"
+
+        opts[:src_file] = ENV["INFO_PLIST_PATH"]
+        opt.on("-s", "--src_file STR", 
+               "input xml file path"){|s|
+          opts[:src_file] = s
+        }
+
+        opts[:dst_file] = ENV["INFO_PLIST_PATH"]
+        opt.on("-o", "--dst_file STR", 
+               "output xml file path"){|s|
+          opts[:dst_file] = s
+        }
+      }
+
+      opt.parse(argv)
+      return opts
+    end
+
+  end
+end
+
+UpdatePlistBuildVersion::Main.new.start
