@@ -72,3 +72,20 @@ require "update_plist_build_version"
 updater = UpdatePlistBuildVersion::Runner.new(src_file:ENV["INFO_PLIST_PATH"])
 updater.run
 ```
+
+## Fastlaneと一緒に使う
+
+```ruby
+platform :ios do
+
+  lane :adhoc do
+    UpdatePlistBuildVersion::Runner.new(src_file: "../YourProject/Info.plist").run
+    sigh(adhoc: true)
+
+    gym()
+    deploygate()
+    crashlytics()
+  end
+
+end
+```
