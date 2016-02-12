@@ -4,10 +4,7 @@ XCodeプロジェクトに含まれる`info.plist`中のバージョン番号を
 
 ## Installation
 
-    $ cd /path/to/update_plist_build_version
-    $ bundle install (or $ bundle install --path=.bundle)
-    $ bundle exec rake build
-    $ sudo gem install pkg/update_plist_build_version-0.0.1.gem
+    $ gem install update_plist_build_version
 
 ## Usage
 
