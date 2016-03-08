@@ -26,7 +26,7 @@ module UpdatePlistBuildVersion
                      else
                        "#{today_str}.0"
                      end
-
+      
       @xml.elements["plist/dict/string[#{pos}]"].text = next_version
       write(@xml)
       return next_version, @xml
@@ -42,8 +42,8 @@ module UpdatePlistBuildVersion
 
       xml.elements["plist/dict"].each do |dict|
         if dict.class == REXML::Element and dict.name == "key"
-          return pos if dict.text == "CFBundleVersion"
           pos += 1
+          return pos if dict.text == "CFBundleVersion"
         end
       end
 
