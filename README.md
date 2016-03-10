@@ -4,10 +4,7 @@ XCodeプロジェクトに含まれる`info.plist`中のバージョン番号を
 
 ## Installation
 
-    $ cd /path/to/update_plist_build_version
-    $ bundle install (or $ bundle install --path=.bundle)
-    $ bundle exec rake build
-    $ sudo gem install pkg/update_plist_build_version-0.0.1.gem
+    $ gem install update_plist_build_version
 
 ## Usage
 
@@ -71,4 +68,21 @@ require "update_plist_build_version"
 
 updater = UpdatePlistBuildVersion::Runner.new(src_file:ENV["INFO_PLIST_PATH"])
 updater.run
+```
+
+## Fastlaneと一緒に使う
+
+```ruby
+platform :ios do
+
+  lane :adhoc do
+    UpdatePlistBuildVersion::Runner.new(src_file: "../YourProject/Info.plist").run
+    sigh(adhoc: true)
+
+    gym()
+    deploygate()
+    crashlytics()
+  end
+
+end
 ```
