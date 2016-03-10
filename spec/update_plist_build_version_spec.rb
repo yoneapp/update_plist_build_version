@@ -10,6 +10,8 @@ describe UpdatePlistBuildVersion do
     @next_month_plist = File.join(File.dirname(__FILE__), 'info_next_month.plist')
     @before_year_plist = File.join(File.dirname(__FILE__), 'info_before_year.plist')
     @next_year_plist = File.join(File.dirname(__FILE__), 'info_next_year.plist')
+    @issue_1_plist_src = File.join(File.dirname(__FILE__), 'issue_1_src.plist')
+    @issue_1_plist_dst = File.join(File.dirname(__FILE__), 'issue_1_dst.plist')
     FileUtils.copy(sample_path, @info_plist)
   end
 
@@ -84,6 +86,14 @@ describe UpdatePlistBuildVersion do
     runner.today = Time.mktime(2016, 1, 1)
     runner.run
     expect(File.open(@info_plist) {|f| f.read}).to eq(File.open(@next_year_plist) {|f| f.read})
+  end
+
+  it "array value before Version key" do
+    opts = {:src_file => @issue_1_plist_src, :dst_file => @info_plist}
+    runner = UpdatePlistBuildVersion::Runner.new(opts)
+    runner.today = Time.mktime(2016, 1, 1)
+    runner.run
+    expect(File.open(@info_plist) {|f| f.read}).to eq(File.open(@issue_1_plist_dst) {|f| f.read})
   end
 
 end

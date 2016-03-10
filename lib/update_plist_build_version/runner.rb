@@ -18,7 +18,7 @@ module UpdatePlistBuildVersion
     # バージョンのインクリメント処理を開始します.
     def run
       pos = get_version_position(@xml)
-      version = @xml.elements["plist/dict/string[#{pos}]"].text
+      version = @xml.elements["plist/dict/*[#{pos}]"].text
       date,index =  version.split(/\./)
 
       next_version = if today?(date)
@@ -27,7 +27,7 @@ module UpdatePlistBuildVersion
                        "#{today_str}.0"
                      end
       
-      @xml.elements["plist/dict/string[#{pos}]"].text = next_version
+      @xml.elements["plist/dict/*[#{pos}]"].text = next_version
       write(@xml)
       return next_version, @xml
     end
@@ -43,7 +43,7 @@ module UpdatePlistBuildVersion
       xml.elements["plist/dict"].each do |dict|
         if dict.class == REXML::Element and dict.name == "key"
           pos += 1
-          return pos if dict.text == "CFBundleVersion"
+          return (pos * 2) if dict.text == "CFBundleVersion"
         end
       end
 
